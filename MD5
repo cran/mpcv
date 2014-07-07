@@ -1,0 +1,13 @@
+37f55829b4bf0a49f353e4c82444ca94 *DESCRIPTION
+900d6562ff59de9bd04a74bbe2c36cd2 *NAMESPACE
+a7ee02dedf7b5a0a7ee09ccaaa6a0be6 *R/mpcv.R
+dda7f8b24eb7351103f9e0326036935f *README
+b8444679c4e470ebaa12acd6f90846c0 *data/automotive.rda
+49eb709fb3f8c8cb04a6cce216f4fa21 *data/industrial.rda
+48876c47c5aa34069f628d451e4cd9d5 *data/sleeves.rda
+e561d34ccf655f8c504260a051789990 *inst/CITATION
+9670b1259714568077a85d9f144dc0d0 *inst/NEWS.Rd
+931bdb8a58411bb01ebcf6094de8f6c2 *man/automotive.Rd
+e1c623cb3a12222fd8842deb541f371b *man/industrial.Rd
+ef2012109f4bf4db20662dfbcb8d53a4 *man/mpcv.Rd
+eb7b208e32330bbd4bbaa990fb8a92ff *man/sleeves.Rd

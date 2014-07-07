@@ -1,0 +1,15 @@
+citHeader("To cite the methodology used in the 'mpcv' package use:")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry="Article",
+         title = "Multivariate Process Capability Vector Based on One-Sided Model",
+         author = personList(as.person("Krzysztof Ciupke")),
+         year = "2014",
+         note = vers,
+		 journal = "Quality and Reliability Engineering International",
+		  
+         textVersion =
+         paste("Krzysztof Ciupke (2014). Multivariate Process Capability Vector Based on One-Sided Model. Quality and Reliability Engineering International, DOI: 10.1002/qre.1590")
+)
