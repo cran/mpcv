@@ -1,2 +1,6 @@
 exportPattern("^[[:alpha:]]+")
 import(lpSolve)
+
+S3method(print, mpcv)
+S3method(coef, mpcv)
+S3method(plot, mpcv)

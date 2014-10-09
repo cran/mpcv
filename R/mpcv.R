@@ -1,11 +1,17 @@
 mpcv <-
   function(x, indepvar=1, LSL, USL, Target, alpha=0.0027, distance = list( "mahalanobis", "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski"), 
-           n.integr=100, graphic=FALSE, coef.up, coef.lo, verbose=FALSE)
+           n.integr=100,  coef.up, coef.lo)
   {
     n.coef <- 5 # No of coeff.
 
     if(missing(x)){
       stop("argument 'x' is missing")
+    }
+    if(!is.matrix(x)){
+      stop("argument 'x' is not a matrix")
+    }
+    if(!is.numeric(x)){
+      stop("argument 'x' is not numeric")
     }
     if (missing(indepvar)) {
       IndepId <- 1
@@ -17,7 +23,7 @@ mpcv <-
         IndepId <- which(colnames(x)==indepvar)
     }
     if(length(IndepId)==0){
-      stop("argument 'indepvar': undefined columns selected")
+      stop("argument 'indepvar': undefined variable selected")
     }
     if (missing(Target)) {
       Target <- LSL + (USL - LSL)/2
@@ -154,46 +160,9 @@ mpcv <-
     PD.which <- which(PD.matrix == PD.max, arr.ind = TRUE)[2]
     PD <- round(PD.max * 100)
     PDVar <- colnames(x)[PD.which]
+
     
-    if(graphic) {
-      # max & min values of the data and models
-      graph.max <- matrix(ncol=n.features)
-      graph.min <- matrix(ncol=n.features)
-      graph.max[IndepId] <- USL[IndepId]
-      graph.min[IndepId] <- LSL[IndepId]
-      
-      par(mfrow=c(1,n.features-1), oma=c(0,0,2,0), xpd=NA)
-      # values of models of each variable and a plot
-      for(i in ForIds)
-      {
-        graph.max[i] <- max(models.integr.u[,i], USL[i])
-        graph.min[i] <- min(models.integr.l[,i], LSL[i])
-        par(mar=c(5.1, 5.1, 4.1, 2.1)) 
-        plot(x[,IndepId],x[,i], type="p", pch=21, cex=1, col="black",  bg="darkgrey", xlim=c(.95*LSL[IndepId],1.05*USL[IndepId]), 
-             ylim=c(.95*graph.min[i], 1.05*graph.max[i]),
-             xlab=colnames(x)[IndepId], ylab=colnames(x)[i],
-             cex.lab=1, cex.axis=1, cex.main=1, cex.sub=1, mar=c(5,10,2,2))
-        rect(LSL[IndepId], LSL[i], USL[IndepId], USL[i], col="darkgreen", density=0, lwd=2, lty = 2)
-        lines(points.integr,models.integr.u[,i], col="red", lwd=2)
-        lines(points.integr,models.integr.l[,i], col="red", lwd=2)
-        lines(c(points.integr[1], points.integr[1]), c(models.integr.l[1,i], models.integr.u[1,i]), , col="red", lwd=2)
-        lines(c(points.integr[n.integr], points.integr[n.integr]), c(models.integr.l[n.integr,i], models.integr.u[n.integr,i]), , col="red", lwd=2)
-        points(Target[IndepId],Target[i], col="darkgreen",pch=10, cex=3, lwd=2)
-        points(marginal.median[IndepId],marginal.median[i], col="red",pch="+", cex=2)
-      }
-      legend("topright", inset=-.1, ncol=3, legend=c("Specification limits", "Target", "Median"), bty="n",
-             col=c("darkgreen", "darkgreen", "red"), lty = c(2,NA,NA), lwd=2, pch = c(NA, 10, 43), pt.cex=2, cex=1, merge=FALSE) 
-    }
-    
-    if(verbose)
-    {
-      cat(paste("Cpv: ", sprintf("%3d", CpV), "%\n", sep=""))
-      cat(paste(" PS: ", sprintf("%3d", PS), "%", sep="")) 
-      PSVar <- colnames(x)[max.shift.id]
-      cat(",\t variable: ",PSVar , "\n") 
-      cat(paste(" PD: ", sprintf("%3d", PD), "%", sep=""))
-      cat(",\t variable: ", PDVar, "\n") 
-    }
-    
-    return(list(CpV=CpV, PS=PS, PSvar=PSVar, PD=PD, PDvar=PDVar, coef.lo=a.l[,1], coef.up=a.u[,2]))
+    res <- list(CpV=CpV, PS=PS, PSvar=PSVar, PD=PD, PDvar=PDVar, coef.lo=a.l, coef.up=a.u, x=x, Target=Target, LSL=LSL, USL=USL, indepvar=IndepId)
+    class(res) <-"mpcv"
+    return(res)
   }
